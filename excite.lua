@@ -1,12 +1,12 @@
 -- excite.lua
 -- Requirements
 local json = require "JSON"
-local curl = require 'cURL'
-local argparse = require 'argparse'
+local curl = require "cURL"
+local argparse = require "argparse"
 
 -- Define arguments
 local parser = argparse("excite", "A terminal-based citation generator")
---parser:argument("input", "ISBN code")
+parser:argument("input", "ISBN code")
 parser:flag("-o --output", "Output citation to a file")
 parser:option("-r --rename", "Output citation to a file", "citation.txt")
 
@@ -16,6 +16,17 @@ local input = args.input
 local output = args.output
 local default_file = args.rename
 
+io.stdout:write([[
+
+    ███████╗██╗  ██╗ ██████╗██╗████████╗███████╗
+    ██╔════╝╚██╗██╔╝██╔════╝██║╚══██╔══╝██╔════╝
+    █████╗   ╚███╔╝ ██║     ██║   ██║   █████╗  
+    ██╔══╝   ██╔██╗ ██║     ██║   ██║   ██╔══╝  
+    ███████╗██╔╝ ██╗╚██████╗██║   ██║   ███████╗
+    ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝   ╚═╝   ╚══════╝
+
+ ]])
+io.stdout:flush()
 local isbn = "9780140328721"
 local filename = "/home/nick/github_repos/excite-cli/data.txt"
 --local url = "https://openlibrary.org/works/OL45883W.json"
@@ -68,9 +79,8 @@ function bibtex(decode)
     local id = nil
     for _,s in pairs(authors) do; id=s; end
     id = id:lower() .. year
-    print("ID " .. id)
 
-    print("title: " .. title .. "\nauthor: " .. author .. "\nyear: " .. year .. "\npublisher: " .. publisher)
+    --print("title: " .. title .. " \nauthor: " .. author .. " \nyear: " .. year .. "\npublisher: " .. publisher)
 
     local output = "@book{" .. id .. ",\n" ..
         "\ttitle = " .. string.format("\"%s\"", title) .. "\n" ..
@@ -78,9 +88,15 @@ function bibtex(decode)
         "\tyear = " .. string.format("\"%s\"", year) .. "\n" ..
         "\tpublisher = " .. string.format("\"%s\"", publisher) .. "\n" ..
         "}"
+
+    -- Copy citation clipboard
+    -- echo "text" | xclip -sel clip
+    os.execute(string.format("echo \"%s\" | xclip -sel clip", output))
+    print("\tCitation copied to clipboard...")
     local f = io.open("/home/nick/github_repos/excite-cli/output.txt", "w")
     f:write(output)
     f:close()
+    print("\tCitation successfully saved to file")
 end
 
 -- Function calls
