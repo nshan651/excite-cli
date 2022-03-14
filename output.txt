@@ -1,6 +1,6 @@
-@book{dahl1988,
-	title = "Fantastic Mr. Fox"
-	author = "Roald Dahl"
-	year = "1988"
-	publisher = "Puffin"
+@book{cormen2009,
+author = "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein"
+title = "Introduction to Algorithms"
+year = "2009"
+publisher = "The MIT Press"
 }
