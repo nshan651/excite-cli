@@ -1,6 +1,1 @@
-@book{cormen2009,
-author = "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein"
-title = "Introduction to Algorithms"
-year = "2009"
-publisher = "The MIT Press"
-}
+Baker, J. A.. "The peregrine." New York Review Books, 2005.

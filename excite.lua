@@ -75,8 +75,7 @@ local function cite(decode, url)
 
     -- Get edition from worksID
     local OLID = isbn_data["ISBN:" .. INPUT]["identifiers"]["openlibrary"][1]
-    local url2 = "https://openlibrary.org/books/" .. OLID .. ".json"
-    local edition = decode(url2)["edition_name"]
+    local edition = decode("https://openlibrary.org/books/" .. OLID .. ".json")["edition_name"]
 
     -- Handle authors
     local names = isbn_data["ISBN:" .. INPUT]["authors"]
@@ -97,7 +96,7 @@ local function cite(decode, url)
 
     -- Declare output and Format object
     local output = nil
-    local fmt = Format:new(authors, title, nil, nil, year, publisher)
+    local fmt = Format:new(authors, title, nil, edition, publisher, year)
 
     -- Choose a citation style
     if STYLE == "bibtex" then
@@ -110,10 +109,10 @@ local function cite(decode, url)
         output = fmt:bibtex(id)
     elseif STYLE == "MLA" then
         print("MLA Selected")
-        output = fmt.mla(authors, title, nil, edition, publisher, year)
+        output = fmt:mla()
     elseif STYLE == "APA" then
         print("APA Selected")
-        output = fmt.apa(authors, title, nil, edition, publisher, year)
+        output = fmt:apa()
     end
 
     assert(type(output) == "string", "Failed to format citation")
@@ -134,7 +133,8 @@ end
 
 local url = nil
 -- Pattern matching query to check for ISBN 10/13
-if string.match(INPUT, "%d%d%d%d%d%d%d%d%d%d%d%d%d") then
+if string.match(INPUT, "%d%d%d%d%d%d%d%d%d%d%d%d%d") or string.match(INPUT, "%d%d%d%d%d%d%d%d%d%d")
+then
     -- ISBN search
     url = "https://openlibrary.org/api/books?bibkeys=ISBN:" .. INPUT .. "&jscmd=data&format=json"
 else
@@ -150,14 +150,3 @@ else
 end
 
 cite(decode, url)
-
--- TEST
---[[
-local d = decode(url)
-
-local tab = {"yeezy", "MBDTF", nil, "69th Edition", "GOOD Music", "1999"}
-local form = fmt:new("yeezy", "MBDTF", nil, "69th Edition", "GOOD Music", "1999")
-
---form.tab = tab
-print(fmt:bibtex("ye420"))
---]]

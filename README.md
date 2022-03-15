@@ -32,7 +32,7 @@ Options:
 
 ## Dependencies
 
-* Lua 5.4.4
+* Lua 5.4.4+
 
 ``` 
 sudo luarocks install lua-curl lua-json argparse
