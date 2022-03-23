@@ -52,6 +52,17 @@ local function split(inputstr, sep)
     return t
 end
 
+-- Slice a table
+function table.slice(tbl, first, last, step)
+  local sliced = {}
+
+  for i = first or 1, last or #tbl, step or 1 do
+    sliced[#sliced+1] = tbl[i]
+  end
+
+  return sliced
+end
+
 -- HTTP GET: curl the data and return decoded json table
 local function decode(url)
     local f = io.open(filename, "w")
@@ -68,6 +79,7 @@ local function decode(url)
     return json:decode(str)
 end
 
+-- Fetch relevant info from JSON string
 local function cite(decode, url)
     -- Gather basic info: author, title, year, publisher
     print("Fetching Citation...")
@@ -95,7 +107,7 @@ local function cite(decode, url)
     local publisher = isbn_data["ISBN:" .. INPUT]["publishers"][1]["name"]
 
     -- Declare output and Format object
-    local output = nil
+    local output
     local fmt = Format:new(authors, title, nil, edition, publisher, year)
 
     -- Choose a citation style
@@ -131,9 +143,57 @@ local function cite(decode, url)
     print("Citation copied to clipboard")
 end
 
+-- TEMPORARY inference
+local function tmp(authors, title, year, publisher)
+    print("\n\nYOU SELECTED: ")
+    print(authors .. ", " .. title .. ", " .. year)
+end
+
+-- Search for relevant entries
+local function search(decode, url)
+    local search_data = decode(url)
+    local doc_index = search_data["docs"]
+    local count = 1; local step = 4
+    local block
+    repeat
+        -- TODO: Input checking for this function!
+        local sel = tonumber(block)
+        if sel then
+            tmp(
+                doc_index[sel]["title"],
+                doc_index[sel]["author_name"][1],
+                doc_index[sel]["first_publish_year"],
+                nil
+            )
+        end
+        -- Change the step counter if num entries not divisible by 5
+        if count+4 > #doc_index then
+            step = #doc_index - count
+        end
+        for i = count, count+step, 1 do
+            ---[[
+            if doc_index[i]["author_name"] then
+                print("[" .. i .. "]")
+                print(doc_index[i]["title"])
+                print(doc_index[i]["author_name"][1])
+                print(doc_index[i]["first_publish_year"])
+                print("-------------------------")
+            end
+            --]]
+        end
+        print("Press any key for more results")
+        count = count+5
+        block = io.read()
+        --block = true
+        print("-------------------------")
+    until(not block or count >= #doc_index)
+    print("Done")
+end
+
 local url = nil
 -- Pattern matching query to check for ISBN 10/13
-if string.match(INPUT, "%d%d%d%d%d%d%d%d%d%d%d%d%d") or string.match(INPUT, "%d%d%d%d%d%d%d%d%d%d")
+if
+    string.match(INPUT, "%d%d%d%d%d%d%d%d%d%d%d%d%d") or string.match(INPUT, "%d%d%d%d%d%d%d%d%d%d")
 then
     -- ISBN search
     url = "https://openlibrary.org/api/books?bibkeys=ISBN:" .. INPUT .. "&jscmd=data&format=json"
@@ -141,12 +201,11 @@ else
     -- Text-based search
     local query = split(string.lower(INPUT))
     local output = query[1]
-    for i,_ in pairs(query) do
-        if i > 1 then
+    for i = 2, #query do
             output = output .. "+" .. query[i]
-        end
     end
     url = "http://openlibrary.org/search.json?title=" .. output
 end
 
-cite(decode, url)
+--cite(decode, url)
+search(decode, url)

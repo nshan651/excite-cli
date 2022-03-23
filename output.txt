@@ -1,1 +1,6 @@
-Baker, J. A.. "The peregrine." New York Review Books, 2005.
+@book{a.2005,
+author = "Baker, J. A."
+title = "The peregrine"
+year = "2005"
+publisher = "New York Review Books"
+}
