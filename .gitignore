@@ -1,3 +1,7 @@
+# JSON data
+data.txt
+output.txt
+
 # Compiled Lua sources
 luac.out
 
