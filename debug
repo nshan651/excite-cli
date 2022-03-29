@@ -1,0 +1,4 @@
+#!/bin/sh
+# Script to autorun the program
+
+lua excite.lua sapiens bibtex
