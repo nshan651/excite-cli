@@ -8,22 +8,26 @@ local Format = {
     container = "",
     edition = "",
     publisher = "",
-    year = ""
+    year = "",
+    id = ""
 }
 
 -- Constructor
-function Format:new(authors, title, container, edition, publisher, year)
+--function Format:new(authors, title, container, edition, publisher, year, id)
+function Format:new(tab)
     o = {}
     setmetatable(o, self)
     self.__index = self
-    self.authors = authors
-    self.title = title
-    self.container = container
-    self.edition = edition
-    self.publisher = publisher
-    self.year = year
+    self.authors = tab[1]
+    self.title = tab[2]
+    self.container = tab[3]
+    self.edition = tab[4]
+    self.publisher = tab[5]
+    self.year = tab[6]
+    self.id = tab[7]
     return o
 end
+
 
 -- Pseudo-private output function for spacing MLA and APA
 local output = function(self, tab)
@@ -48,8 +52,8 @@ end
 -- Bibtex format
 -- Format id: Split the author string, loop through to find last name, format id
 -- Return a bibtex string
-function Format:bibtex(id)
-    return "@book{" .. id .. ",\n" ..
+local function bibtex(self)
+    return "@book{" .. self.id .. ",\n" ..
     "author = " .. string.format("\"%s\"", self.authors) .. "\n" ..
     "title = " .. string.format("\"%s\"", self.title) .. "\n" ..
     "year = " .. string.format("\"%s\"", self.year) .. "\n" ..
@@ -59,16 +63,38 @@ end
 
 -- MLA Citation
 -- TODO: Implement container
-function Format:mla()
+local function mla(self)
     print("publisher is " .. self.publisher)
     local tab = {self.authors .. ". \"", self.title .. ".\" ", self.publisher .. ", ", self.year .. "."}
     return output(self, tab)
 end
 
 -- APA Citation
-function Format:apa()
+local function apa(self)
     local tab = {self.authors, "(" .. self.year .. "). ", self.title .. ". ", string.upper(self.publisher) .. "."}
     return output(self, tab)
+end
+
+-- Public function to choose citation
+function Format:cite(style)
+    print("\n\nYOU SELECTED: ")
+    print(self.authors .. ", " .. self.title .. ", " .. self.year)
+    -- Declare output and Format object
+    local output
+
+    -- Choose a citation style
+    if style == "bibtex" then
+        print("Bibtex selected")
+        output = bibtex(self)
+    elseif style == "MLA" then
+        print("MLA Selected")
+        output = mla(self)
+    elseif style == "APA" then
+        print("APA Selected")
+        output = apa(self)
+    end
+
+    return output
 end
 
 return Format

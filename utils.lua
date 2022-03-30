@@ -5,7 +5,7 @@
 local Utils = {}
 
 -- Split function (no string split function in standard lua)
-local function Utils.split(inputstr, sep)
+function Utils.split(inputstr, sep)
     if sep == nil then
             sep = "%s"
     end
@@ -17,7 +17,7 @@ local function Utils.split(inputstr, sep)
 end
 
 -- Slice a table
-function Utils.table.slice(tbl, first, last, step)
+function Utils.slice(tbl, first, last, step)
   local sliced = {}
 
   for i = first or 1, last or #tbl, step or 1 do
