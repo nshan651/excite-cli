@@ -3,11 +3,8 @@
 --]]
 
 -- Requirements
-local json = require "JSON"
-local curl = require "cURL"
 local argparse = require "argparse"
 
-local Utils = require "./utils"
 local Parser = require "./parser"
 local API = require "./api"
 local Format = require "./format"
@@ -23,19 +20,18 @@ local ascii_logo = [[
 
 -- Define arguments
 local ap = argparse("excite", ascii_logo)
-ap:argument("input", "ISBN code")
-ap:argument("cite_style")
-    :choices {"bibtex", "APA", "MLA"}
+--ap:argument("input", "ISBN code")
+--ap:argument("cite_style")
+--    :choices {"bibtex", "APA", "MLA"}
 ap:flag("-o --output", "Output citation to a file.")
 ap:option("-r --rename", "Rename output file.", "citation.txt")
 
 -- Parse args
 ARGS = ap:parse()
-INPUT = ARGS.input
-STYLE = ARGS.cite_style
+--INPUT = ARGS.input
+--STYLE = ARGS.cite_style
 OUTPUT = ARGS.output
 DEFAULT_FILE = ARGS.rename
-
 
 --[[
     Some example ISBNs:
@@ -48,15 +44,12 @@ local function put(output)
     local f = assert(io.open("/home/nick/github_repos/excite-cli/output.txt", "w"), "Cannot open file")
     f:write(output)
     f:close()
-    --os.execute(string.format("echo \"%s\" | xclip -sel clip", output))
     os.execute(string.format("cat output.txt | xclip -sel clip", output))
     --os.execute("viu test3.jpg")
 
-    ---[[
     print("---------------------------------------------------------")
     print(output)
     print("---------------------------------------------------------")
-    --]]
     print("Citation copied to clipboard")
 end
 
@@ -64,16 +57,29 @@ end
 local function main()
     print("Fetching Citation...")
 
+    --[[
+        Swtich between formatting the url/making API calls and loading from local cache
+        Comment out args and fill out testing variables for easier testing
+        TODO: Create a more elegant testing system
+    --]]
+
+    -- TESTING VARS
+    local INPUT = "9781590171332"
+    local STYLE = "bibtex"
+    local api_type = "ISBN"
+
     -- Format url
-    local url, api_type = API.fmt_url(INPUT)
-
+    --local url, api_type = API.fmt_url(INPUT)
     -- Format JSON data as a lua table
-    local payload = API.decode(url)
+    --local payload = API.decode(url)
 
+    local payload = API.load_cache("isbn-test") -- Cached files: isbn-bibtex, isbn-apa, search-bibtex, search-apa
+
+    ---[[
     -- Handle different APIs to get the required information
     local tabcite = {}
     if api_type == "ISBN" then
-        tabcite = Parser.isbn(payload)
+        tabcite = Parser.isbn(payload, INPUT)
     elseif api_type == "SEARCH" then
         tabcite = Parser.search(payload)
     end
@@ -84,7 +90,7 @@ local function main()
 
     -- Save citation to clipboard and (optionally) to file
     put(output)
-
+    --]]
 end
 
 main()

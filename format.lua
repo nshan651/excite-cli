@@ -64,7 +64,6 @@ end
 -- MLA Citation
 -- TODO: Implement container
 local function mla(self)
-    print("publisher is " .. self.publisher)
     local tab = {self.authors .. ". \"", self.title .. ".\" ", self.publisher .. ", ", self.year .. "."}
     return output(self, tab)
 end
@@ -77,20 +76,18 @@ end
 
 -- Public function to choose citation
 function Format:cite(style)
-    print("\n\nYOU SELECTED: ")
-    print(self.authors .. ", " .. self.title .. ", " .. self.year)
     -- Declare output and Format object
     local output
 
     -- Choose a citation style
     if style == "bibtex" then
-        print("Bibtex selected")
+        print("\nBibtex selected")
         output = bibtex(self)
     elseif style == "MLA" then
-        print("MLA Selected")
+        print("\nMLA Selected")
         output = mla(self)
     elseif style == "APA" then
-        print("APA Selected")
+        print("\nAPA Selected")
         output = apa(self)
     end
 
