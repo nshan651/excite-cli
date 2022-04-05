@@ -1,6 +1,0 @@
-@book{a.2005,
-author = "Baker, J. A."
-title = "The peregrine"
-year = "2005"
-publisher = "New York Review Books"
-}

@@ -20,16 +20,16 @@ local ascii_logo = [[
 
 -- Define arguments
 local ap = argparse("excite", ascii_logo)
---ap:argument("input", "ISBN code")
---ap:argument("cite_style")
---    :choices {"bibtex", "APA", "MLA"}
+ap:argument("input", "ISBN code")
+ap:argument("cite_style")
+    :choices {"bibtex", "APA", "MLA"}
 ap:flag("-o --output", "Output citation to a file.")
 ap:option("-r --rename", "Rename output file.", "citation.txt")
 
 -- Parse args
 ARGS = ap:parse()
---INPUT = ARGS.input
---STYLE = ARGS.cite_style
+INPUT = ARGS.input
+STYLE = ARGS.cite_style
 OUTPUT = ARGS.output
 DEFAULT_FILE = ARGS.rename
 
@@ -37,6 +37,8 @@ DEFAULT_FILE = ARGS.rename
     Some example ISBNs:
     local isbn = "9781590171332" --"9780262033848" --"0140286802"
     local worksid = "OL23170657M" --"OL45883W"
+    local doi = 10.1016/j.cose.2020.101892
+
 --]]
 
 -- Save citation to clipboard and (optionally) to file
@@ -59,21 +61,15 @@ local function main()
 
     --[[
         Swtich between formatting the url/making API calls and loading from local cache
-        Comment out args and fill out testing variables for easier testing
-        TODO: Create a more elegant testing system
+        TODO: A more elegant testing system
     --]]
 
-    -- TESTING VARS
-    local INPUT = "9781590171332"
-    local STYLE = "bibtex"
-    local api_type = "ISBN"
-
     -- Format url
-    --local url, api_type = API.fmt_url(INPUT)
+    local url, api_type = API.fmt_url(INPUT)
+
     -- Format JSON data as a lua table
     --local payload = API.decode(url)
-
-    local payload = API.load_cache("isbn-test") -- Cached files: isbn-bibtex, isbn-apa, search-bibtex, search-apa
+    local payload = API.load_cache("doi") -- Cached files: isbn-bibtex, isbn-apa, search-bibtex, search-apa
 
     ---[[
     -- Handle different APIs to get the required information
@@ -82,8 +78,11 @@ local function main()
         tabcite = Parser.isbn(payload, INPUT)
     elseif api_type == "SEARCH" then
         tabcite = Parser.search(payload)
+    elseif api_type == "DOI" then
+        tabcite = Parser.doi(payload)
     end
 
+    --[[
     -- Format and output citation
     local fmt = Format:new(tabcite)
     local output = fmt:cite(STYLE)

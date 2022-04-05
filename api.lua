@@ -16,11 +16,16 @@ function API.fmt_url(input)
     if
         string.match(input, "%d%d%d%d%d%d%d%d%d%d%d%d%d") or string.match(input, "%d%d%d%d%d%d%d%d%d%d")
     then
-        -- ISBN search
         url = "https://openlibrary.org/api/books?bibkeys=ISBN:" .. input .. "&jscmd=data&format=json"
         api_type = "ISBN"
+    -- DOI query
+    elseif
+        string.match(input, "10.%d%d%d%d/.+")
+    then
+        url = "https://api.crossref.org/works/" .. input
+        api_type = "DOI"
+    -- Text-based search
     else
-        -- Text-based search
         local query = Utils.split(string.lower(input))
         local output = query[1]
         for i = 2, #query do

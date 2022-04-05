@@ -1,4 +1,22 @@
 #!/bin/sh
 # Script to autorun the program
 
-lua excite.lua sapiens bibtex
+if [ "$1" = "isbn" ]; then
+    if [ "$2" = "APA" ]; then
+        lua excite.lua 9781590171332 APA
+    elif [ "$2" = "bibtex" ]; then
+        lua excite.lua 9781590171332 bibtex
+    # Default
+    else
+        lua excite.lua 9781590171332 bibtex
+    fi
+elif [ "$1" = "search" ]; then 
+    if [ "$2" = "APA" ]; then 
+        lua excite.lua sapiens APA
+    elif [ "$2" = "bibtex" ]; then 
+        lua excite.lua sapiens bibtex
+    # Default
+    else
+        lua excite.lua sapiens bibtex
+    fi
+fi

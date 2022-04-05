@@ -54,6 +54,13 @@ function Parser.isbn(payload, input)
     }
 end
 
+function Parser.doi(payload)
+    local year = payload["message"]["indexed"]["date-parts"][1][1]
+    local publisher = payload["message"]["publisher"]
+    print(publisher)
+    print(year)
+end
+
 -- Search for relevant entries
 -- TODO: Handle container, edition name for SearchAPI, convert ID
 function Parser.search(payload)
