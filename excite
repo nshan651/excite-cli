@@ -1,0 +1,4 @@
+#!/bin/sh
+# Script to autorun the program
+
+lua src/excite.lua $1 $2
