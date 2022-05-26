@@ -10,21 +10,23 @@ local function put(output)
     f:close()
     os.execute(string.format("cat output.txt | xclip -sel clip", output))
     --os.execute("viu test3.jpg")
-
-    print("---------------------------------------------------------")
     print(output)
-    print("---------------------------------------------------------")
-    print("Citation copied to clipboard")
 end
 
-function Main.run(payload, input_code, api_type, cite_style)
-    print("Fetching Citation...")
+--[[
+    Parse citation from API request, format citation based on style, output to the terminal
 
-    local tabcite = Parser.parse_citation(payload, input_code, api_type)
+    Params:
+        payload: JSON API request data
+        input_code: ISBN, DOI
+--]]
+function Main.run(payload, input_key, api_type, cite_style)
+
+    local tabcite = Parser.parse_citation(payload, input_key, api_type, cite_style)
 
     -- Format and output citation
-    local fmt = Format:new(tabcite, api_type)
-    local output = fmt:cite(cite_style)
+    local fmt = Format:new(tabcite, input_key, api_type, cite_style)
+    local output = fmt:cite()
 
     -- Save citation to clipboard and (optionally) to file
     put(output)

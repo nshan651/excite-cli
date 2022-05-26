@@ -7,34 +7,49 @@ local API = require "./src/api"
 
 local Parser = {}
 
-local function isbn(payload, input)
+--[[ Standardize the author table to the form:
+    t = {
+        [1] =
+        {
+            { ['given'] = 'given'},
+            { ['family'] = 'family'},
+        }
+        [etc...]
+--]]
+
+local function isbn(payload, input_key)
     -- Retrieve citation by ISBN
     -- Gather basic info: author, title, year, publisher
 
     -- Handle authors
-    local names = payload["ISBN:" .. input]["authors"]
-    local first_author = Utils.split(names[1]["name"], "%s")
-    local authors = first_author[2] .. ", " .. first_author[1]
+    local names = payload["ISBN:" .. input_key]["authors"]
+    local authors = {}
+    for i=1, #names do
+        local author = Utils.split(names[i]["name"], "%s")
+        authors[i] = { ['given'] = author[1], ['family'] = author[2] }
+    end
 
+    --[[
     -- Multiple authors case
     if (#names == 2) then
         authors = authors .. ", and " .. names[2]["name"]
     elseif (#names > 2) then
         authors = authors .. ", et al"
     end
+    --]]
 
     -- Split date string to find the year
     local year
-    local date = Utils.split(payload["ISBN:" .. input]["publish_date"], "%s")
+    local date = Utils.split(payload["ISBN:" .. input_key]["publish_date"], "%s")
     for _,s in pairs(date) do; year=s; end
 
     -- Title and publisher
-    local title = payload["ISBN:" .. input]["title"]
-    local publisher = payload["ISBN:" .. input]["publishers"][1]["name"]
+    local title = payload["ISBN:" .. input_key]["title"]
+    local publisher = payload["ISBN:" .. input_key]["publishers"][1]["name"]
 
     -- Edition
     local edition
-    local works_key = payload["ISBN:" .. input]["key"]
+    local works_key = payload["ISBN:" .. input_key]["key"]
     -- NOTE: UNCOMMENT TO GO LIVE
     --local edition_payload = API.decode("https://openlibrary.org" .. works_key .. ".json")
     --[[
@@ -45,11 +60,8 @@ local function isbn(payload, input)
     --]]
 
     -- Format id (first author surname + year of publication)
-    local id
-    for _,s in pairs(first_author) do; id=s; end
-    id = id:lower() .. year
+    local bibtex_id = authors[1]["family"]:lower() .. year
 
-    -- Return the values as a table
     return
     {
         authors,
@@ -58,11 +70,40 @@ local function isbn(payload, input)
         edition,
         publisher,
         year,
-        id
+        bibtex_id,
+        input_key
     }
 end
 
 -- Retrieve citation by DOI
+local function doi(payload, input_key, cite_style)
+    local title = payload["message"]["title"][1]
+    local year = payload["message"]["indexed"]["date-parts"][1][1]
+    local publisher = payload["message"]["publisher"]
+
+    -- Standardized author table
+    local names = payload["message"]["author"]
+    local authors = {}
+    for i=1, #names do
+        authors[i] = { ["given"] = names[i]["given"], ["family"] = names[i]["family"] }
+    end
+
+    local bibtex_id = authors[1]["family"]:lower() .. year
+
+    return
+    {
+        authors,
+        title,
+        nil, -- container
+        nil, -- edition
+        publisher,
+        year,
+        bibtex_id,
+        input_key
+    }
+end
+
+--[[ OLD DOI
 local function doi(payload, input_key)
     local title = payload["message"]["title"][1]
     local year = payload["message"]["published-print"]["date-parts"][1][1]
@@ -83,10 +124,11 @@ local function doi(payload, input_key)
         input_key
     }
 end
+--]]
 
 -- Search for relevant entries
 -- TODO: Handle container, edition name for SearchAPI, convert ID
-local function search(payload)
+local function search(payload, cite_style)
     local doc_index = payload["docs"]
     local count = 1; local step = 4
     local block
@@ -122,7 +164,6 @@ local function search(payload)
                 doc_index[sel]["publisher"][1],
                 doc_index[sel]["first_publish_year"],
                 nil
-                --doc_index[sel]["first_publish_year"] .. doc_index[sel]["author_name"][1]
             }
         end
     until(not block)
@@ -130,14 +171,14 @@ local function search(payload)
     return nil
 end
 
-function Parser.parse_citation(payload, input_code, api_type)
+function Parser.parse_citation(payload, input_key, api_type, cite_style)
     local tabcite = {}
     if api_type == "ISBN" then
-        tabcite = isbn(payload, input_code)
+        tabcite = isbn(payload, input_key, cite_style)
     elseif api_type == "SEARCH" then
-        tabcite = search(payload)
+        tabcite = search(payload, cite_style)
     elseif api_type == "DOI" then
-        tabcite = doi(payload)
+        tabcite = doi(payload, input_key, cite_style)
     end
 
     return tabcite

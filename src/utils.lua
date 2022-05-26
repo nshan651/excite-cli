@@ -27,4 +27,19 @@ function Utils.slice(tbl, first, last, step)
   return sliced
 end
 
+-- Recurse through a table of unknown dimensions
+function Utils.recurse_table(e)
+    -- if e is a table, we should iterate over its elements
+    if type(e) == "table" then
+        for k,v in pairs(e) do -- for every element in the table
+            print(k)
+            Utils.recurse_table(v)       -- recursively repeat the same procedure
+        end
+    else
+        print("     ", e)
+    end
+end
+
+
+
 return Utils

@@ -12,14 +12,14 @@ local Format = {
     publisher = "",
     year = "",
     bibtex_id = "",
-    input_key = ""
+    input_key = "",
+    api_type = ""
 }
 
-function Format:new(tab, api_type)
+function Format:new(tab, input_key, api_type, cite_style)
     o = {}
     setmetatable(o, self)
     self.__index = self
-    self.api_type = api_type
     self.authors = tab[1]
     self.title = tab[2]
     self.container = tab[3]
@@ -27,7 +27,9 @@ function Format:new(tab, api_type)
     self.publisher = tab[5]
     self.year = tab[6]
     self.bibtex_id = tab[7]
-    self.input_key = tab[8]
+    self.input_key = input_key
+    self.api_type = api_type
+    self.cite_style = cite_style
     return o
 end
 
@@ -63,53 +65,82 @@ end
 
 -- Bibtex format
 -- Format bibtex_id: Split the author string, loop through to find last name, format id
--- Return a bibtex string
+-- Return a bibtex string (Only return DOI if of type @article)
 local function bibtex(self)
-    if self.api_type == "ISBN" or self.api_type == "SEARCH" then
-        print("HERE")
-        return "@book{" .. self.bibtex_id .. ",\n" ..
-        "author = " .. string.format("\"%s\"", self.authors) .. "\n" ..
-        "title = " .. string.format("\"%s\"", self.title) .. "\n" ..
-        "year = " .. string.format("\"%s\"", self.year) .. "\n" ..
-        "publisher = " .. string.format("\"%s\"", self.publisher) .. "\n" ..
-        "}"
-    elseif self.api_type == "DOI" then
-        return "@article{" .. self.bibtex_id .. ",\n" ..
-        "author = " .. string.format("\"%s\"", self.authors) .. "\n" ..
-        "title = " .. string.format("\"%s\"", self.title) .. "\n" ..
-        "year = " .. string.format("\"%s\"", self.year) .. "\n" ..
-        "publisher = " .. string.format("\"%s\"", self.publisher) .. "\n" ..
-        "}"
+    --local auth = bibtex_auth(self)
+    local auth = self.authors[1]["given"] .. " " .. self.authors[1]["family"]
+
+    for i=2, #self.authors do
+        auth = auth .. " and " .. self.authors[i]["given"] .. " " .. self.authors[i]["family"]
     end
+
+    local decorator = ""
+
+    if self.api_type == "ISBN" or self.api_type == "SEARCH" then
+        decorator = "@book{"
+
+    elseif self.api_type == "DOI" then
+        decorator = "@article{"
+    end
+
+    return decorator .. self.bibtex_id .. ",\n" ..
+    "author = " .. string.format("\"%s\"", auth) .. "\n" ..
+    "title = " .. string.format("\"%s\"", self.title) .. "\n" ..
+    "year = " .. string.format("\"%s\"", self.year) .. "\n" ..
+    "publisher = " .. string.format("\"%s\"", self.publisher) .. "\n" ..
+    ( self.api_type == "DOI" and "doi = " .. string.format("\"%s\"\n", self.input_key) or "") ..
+    "}"
 end
 
 -- MLA Citation
 local function mla(self)
-    local tab = {self.authors .. ". \"", self.title .. ".\" ", self.publisher .. ", ", self.year .. "."}
+    --local auth = mla_auth(self)
+    local auth = self.authors[1]["family"] .. ", " .. self.authors[1]["given"]
+    if #self.authors == 2 then
+        auth = auth .. ", and " .. self.authors[2]["family"] .. ", " .. self.authors[2]["given"]
+    elseif #self.authors > 2 then
+        auth = auth .. ", et. al"
+    end
+
+    local tab = {auth .. ". \"" .. self.title .. ".\" ", self.publisher .. ", ", self.year .. "."}
     return spacing(self, tab)
 end
 
 -- APA Citation
 local function apa(self)
-    local tab = {self.authors, "(" .. self.year .. "). ", self.title .. ". ", string.upper(self.publisher) .. "."}
+    --local auth = apa_auth(self)
+    local auth = self.authors[1]["family"] .. ", " .. self.authors[1]["given"]:sub(1,1) .. "."
+
+    if #self.authors == 2 then
+        auth = auth .. " & " .. self.authors[2]["family"] .. ", " .. self.authors[2]["given"]:sub(1,1) .. "."
+    elseif #self.authors > 2 then
+        for i=2, #self.authors do
+            if i < 20 and i < #self.authors then
+                auth = auth .. self.authors[i]["family"] .. ", " .. self.authors[i]["given"]:sub(1,1) .. "., "
+            elseif i < 20 and i == #self.authors then
+                auth = auth .. "& " .. self.authors[i]["family"] .. ", " .. self.authors[i]["given"]:sub(1,1) .. "., "
+            end
+        end
+    end
+    if #self.authors >= 20 then
+        auth = " ... " .. self.authors[#self.authors]["family"] .. ", " .. self.authors[#self.authors]["given"]:sub(1,1) .. "."
+    end
+
+    local tab = {auth ..  "(" .. self.year .. "). ", self.title .. ". ", string.upper(self.publisher) .. "."}
     return spacing(self, tab)
 end
 
 -- Public function to choose citation
-function Format:cite(cite_style)
+function Format:cite()
     -- Declare output and Format object
     local citation
-    print("api_type ", self.api_type)
 
     -- Choose a citation style
-    if cite_style == "bibtex" then
-        print("\nBibtex selected")
+    if self.cite_style == "bibtex" then
         citation = bibtex(self)
-    elseif cite_style == "MLA" then
-        print("\nMLA Selected")
+    elseif self.cite_style == "MLA" then
         citation = mla(self)
-    elseif cite_style == "APA" then
-        print("\nAPA Selected")
+    elseif self.cite_style == "APA" then
         citation = apa(self)
     end
 
