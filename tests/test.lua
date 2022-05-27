@@ -24,7 +24,7 @@ TESTFILES = {
 
 local function run_tests(testfiles)
     local input_code
-    local cite_style = "MLA"
+    local cite_style = "bibtex"
     for api_type,_ in pairs(testfiles) do
             for _,test_type in pairs(testfiles[api_type]) do
                 local payload = API.load_cache(api_type, test_type)

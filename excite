@@ -1,4 +1,15 @@
 #!/bin/sh
 # Script to autorun the program
+#
+#Usage: excite [-h] [-o] [-r <rename>] <input> {bibtex,APA,MLA}
+#
+#Arguments:
+#   input                 ISBN code
+#   {bibtex,APA,MLA}
 
-lua src/excite.lua $1 $2
+#Options:
+#   -h, --help            Show this help message and exit.
+#   -o, --output          Output citation to a file.
+#         -r <rename>,    Rename output file. (default: citation.txt)
+
+lua src/excite.lua $1 $2 $3 $4 $5

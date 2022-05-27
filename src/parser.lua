@@ -29,15 +29,6 @@ local function isbn(payload, input_key)
         authors[i] = { ['given'] = author[1], ['family'] = author[2] }
     end
 
-    --[[
-    -- Multiple authors case
-    if (#names == 2) then
-        authors = authors .. ", and " .. names[2]["name"]
-    elseif (#names > 2) then
-        authors = authors .. ", et al"
-    end
-    --]]
-
     -- Split date string to find the year
     local year
     local date = Utils.split(payload["ISBN:" .. input_key]["publish_date"], "%s")
@@ -47,39 +38,20 @@ local function isbn(payload, input_key)
     local title = payload["ISBN:" .. input_key]["title"]
     local publisher = payload["ISBN:" .. input_key]["publishers"][1]["name"]
 
-    -- Edition
-    local edition
-    local works_key = payload["ISBN:" .. input_key]["key"]
-    -- NOTE: UNCOMMENT TO GO LIVE
-    --local edition_payload = API.decode("https://openlibrary.org" .. works_key .. ".json")
-    --[[
-    local edition_payload = API.load_cache("long-citation-support")
-    if edition_payload["edition_name"] then
-        edition = edition_payload["edition_name"]
-    end
-    --]]
-
-    -- Format id (first author surname + year of publication)
-    local bibtex_id = authors[1]["family"]:lower() .. year
-
     return
     {
         authors,
         title,
-        nil,
-        edition,
-        publisher,
+        nil, --container
+        nil, -- journal
         year,
-        bibtex_id,
-        input_key
+        publisher,
+        nil -- pages
     }
 end
 
--- Retrieve citation by DOI
-local function doi(payload, input_key, cite_style)
-    local title = payload["message"]["title"][1]
-    local year = payload["message"]["indexed"]["date-parts"][1][1]
-    local publisher = payload["message"]["publisher"]
+local function doi(payload)
+    -- Retrieve citation by DOI
 
     -- Standardized author table
     local names = payload["message"]["author"]
@@ -87,48 +59,28 @@ local function doi(payload, input_key, cite_style)
     for i=1, #names do
         authors[i] = { ["given"] = names[i]["given"], ["family"] = names[i]["family"] }
     end
-
-    local bibtex_id = authors[1]["family"]:lower() .. year
-
-    return
-    {
-        authors,
-        title,
-        nil, -- container
-        nil, -- edition
-        publisher,
-        year,
-        bibtex_id,
-        input_key
-    }
-end
-
---[[ OLD DOI
-local function doi(payload, input_key)
     local title = payload["message"]["title"][1]
-    local year = payload["message"]["published-print"]["date-parts"][1][1]
+    local journal = payload["message"]["container-title"][1]
+    local year = payload["message"]["indexed"]["date-parts"][1][1]
     local publisher = payload["message"]["publisher"]
-    local bibtex_id = string.lower(payload["message"]["author"][1]["family"]) .. year
-    local auth_list = payload["message"]["author"]
-    local authors = auth_list[1]["given"] .. ", " ..  auth_list[1]["family"]
+    local pages = payload["message"]["page"]
 
     return
     {
         authors,
         title,
-        nil, -- container
-        nil, -- edition
-        publisher,
+        nil, --container
+        journal,
         year,
-        bibtex_id,
-        input_key
+        publisher,
+        pages
     }
+
 end
---]]
 
 -- Search for relevant entries
 -- TODO: Handle container, edition name for SearchAPI, convert ID
-local function search(payload, cite_style)
+local function search(payload)
     local doc_index = payload["docs"]
     local count = 1; local step = 4
     local block
@@ -171,14 +123,14 @@ local function search(payload, cite_style)
     return nil
 end
 
-function Parser.parse_citation(payload, input_key, api_type, cite_style)
+function Parser.parse_citation(payload, input_key, api_type)
     local tabcite = {}
     if api_type == "ISBN" then
-        tabcite = isbn(payload, input_key, cite_style)
+        tabcite = isbn(payload, input_key)
     elseif api_type == "SEARCH" then
-        tabcite = search(payload, cite_style)
+        tabcite = search(payload)
     elseif api_type == "DOI" then
-        tabcite = doi(payload, input_key, cite_style)
+        tabcite = doi(payload)
     end
 
     return tabcite

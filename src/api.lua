@@ -40,8 +40,8 @@ end
 -- HTTP GET: curl the data and return decoded JSON table
 -- TODO: Make data.txt a tempfile
 function API.decode(url)
-    local filename = "/home/nick/github_repos/excite-cli/cache/data.txt"
-    local f = assert(io.open(filename, "w"), "Cannot write to file")
+    local tempfile = "/home/nick/github_repos/excite-cli/cache/data.txt"
+    local f = assert(io.open(tempfile, "w"), "Cannot write to file")
     local c = curl.easy_init()
         c:setopt_url(url)
         -- perform, invokes callbacks
@@ -49,9 +49,11 @@ function API.decode(url)
                         f:write(str)
                         end})
         f:close()
-    local data = assert(io.open(filename), "Cannot open file")
+    local data = assert(io.open(tempfile), "Cannot open file")
     local str = data:read("*a")
     data:close()
+    -- Remove tempfile when finished
+    os.execute("rm " .. tempfile)
     return json:decode(str)
 end
 

@@ -5,15 +5,18 @@
 local Utils = require "./src/utils"
 
 local Format = {
+    -- TODO: Not sure if this is needed!
     authors = "",
     title = "",
     container = "",
-    edition = "",
-    publisher = "",
+    journal = "",
     year = "",
+    publisher = "",
+    pages = "",
     bibtex_id = "",
     input_key = "",
-    api_type = ""
+    api_type = "",
+    cite_style = ""
 }
 
 function Format:new(tab, input_key, api_type, cite_style)
@@ -22,11 +25,13 @@ function Format:new(tab, input_key, api_type, cite_style)
     self.__index = self
     self.authors = tab[1]
     self.title = tab[2]
-    self.container = tab[3]
-    self.edition = tab[4]
-    self.publisher = tab[5]
-    self.year = tab[6]
-    self.bibtex_id = tab[7]
+    self.container = tab[3] or nil
+    self.journal = tab[4] or nil
+    self.year = tab[5]
+    self.publisher = tab[6]
+    self.pages = tab[7]
+
+    self.bibtex_id = self.authors[1]["family"]:lower() .. self.year
     self.input_key = input_key
     self.api_type = api_type
     self.cite_style = cite_style
@@ -74,22 +79,26 @@ local function bibtex(self)
         auth = auth .. " and " .. self.authors[i]["given"] .. " " .. self.authors[i]["family"]
     end
 
-    local decorator = ""
-
     if self.api_type == "ISBN" or self.api_type == "SEARCH" then
-        decorator = "@book{"
+        return "@book{" .. self.bibtex_id .. ",\n" ..
+        "title = " .. string.format("\"%s\"", self.title) .. "\n" ..
+        "author = " .. string.format("\"%s\"", auth) .. "\n" ..
+        "year = " .. string.format("\"%s\"", self.year) .. "\n" ..
+        "publisher = " .. string.format("\"%s\"", self.publisher) .. "\n" ..
+        "}"
 
     elseif self.api_type == "DOI" then
-        decorator = "@article{"
+        return "@article{" .. self.bibtex_id .. ",\n" ..
+        "author = " .. string.format("\"%s\"", auth) .. "\n" ..
+        "title = " .. string.format("\"%s\"", self.title) .. "\n" ..
+        "journal = " .. string.format("\"%s\"", self.journal) .. "\n" ..
+        "year = " .. string.format("\"%s\"", self.year) .. "\n" ..
+        "publisher = " .. string.format("\"%s\"", self.publisher) .. "\n" ..
+        "pages = " .. string.format("\"%s\"", self.pages) .. "\n" ..
+        "doi = " .. string.format("\"%s\"\n", self.input_key) ..
+        "}"
     end
 
-    return decorator .. self.bibtex_id .. ",\n" ..
-    "author = " .. string.format("\"%s\"", auth) .. "\n" ..
-    "title = " .. string.format("\"%s\"", self.title) .. "\n" ..
-    "year = " .. string.format("\"%s\"", self.year) .. "\n" ..
-    "publisher = " .. string.format("\"%s\"", self.publisher) .. "\n" ..
-    ( self.api_type == "DOI" and "doi = " .. string.format("\"%s\"\n", self.input_key) or "") ..
-    "}"
 end
 
 -- MLA Citation
