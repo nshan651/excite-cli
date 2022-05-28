@@ -16,7 +16,7 @@ local ascii_logo = [[
     [*] A terminal-based citation generator]]
 
 local ap = argparse("excite", ascii_logo)
-ap:argument("input", "ISBN code")
+ap:argument("input", "ISBN, DOI, or title query")
 ap:argument("cite_style")
     :choices {"bibtex", "APA", "MLA"}
 ap:flag("-o --output", "Output citation to a file.")

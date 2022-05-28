@@ -1,15 +1,5 @@
 
-```
-    ███████╗██╗  ██╗ ██████╗██╗████████╗███████╗
-    ██╔════╝╚██╗██╔╝██╔════╝██║╚══██╔══╝██╔════╝
-    █████╗   ╚███╔╝ ██║     ██║   ██║   █████╗  
-    ██╔══╝   ██╔██╗ ██║     ██║   ██║   ██╔══╝  
-    ███████╗██╔╝ ██╗╚██████╗██║   ██║   ███████╗
-    ╚══════╝╚═╝  ╚═╝ ╚═════╝╚═╝   ╚═╝   ╚══════╝
-```
-
-### A terminal-based citation generator
-
+![Logo](logo.png)
 Search for a citation by specifying either the title of the work or an identifier code (ISBN, OCLC, LCCN, OLID) and a citation type (MLA, APA, BibTex). 
 
 Copy citations to your clipboard and/or add them to a bibliography file!
