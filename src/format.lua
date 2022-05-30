@@ -4,20 +4,7 @@
 
 local Utils = require "./src/utils"
 
-local Format = {
-    -- TODO: Not sure if this is needed!
-    authors = "",
-    title = "",
-    container = "",
-    journal = "",
-    year = "",
-    publisher = "",
-    pages = "",
-    bibtex_id = "",
-    input_key = "",
-    api_type = "",
-    cite_style = ""
-}
+local Format = {}
 
 function Format:new(tab, input_key, api_type, cite_style)
     o = {}
@@ -32,14 +19,13 @@ function Format:new(tab, input_key, api_type, cite_style)
     self.pages = tab[7]
 
     self.bibtex_id = self.authors[1]["family"]:lower() .. self.year
-    self.input_key = input_key
+    self.input_key = input_key[1]
     self.api_type = api_type
     self.cite_style = cite_style
     return o
 end
 
 -- Pseudo-private output function for spacing MLA and APA
--- TODO: Implement container
 local function spacing(self, tab)
     if self.container then
         table.insert(tab, 3, self.container)
@@ -72,7 +58,6 @@ end
 -- Format bibtex_id: Split the author string, loop through to find last name, format id
 -- Return a bibtex string (Only return DOI if of type @article)
 local function bibtex(self)
-    --local auth = bibtex_auth(self)
     local auth = self.authors[1]["given"] .. " " .. self.authors[1]["family"]
 
     for i=2, #self.authors do
@@ -117,7 +102,6 @@ end
 
 -- APA Citation
 local function apa(self)
-    --local auth = apa_auth(self)
     local auth = self.authors[1]["family"] .. ", " .. self.authors[1]["given"]:sub(1,1) .. "."
 
     if #self.authors == 2 then
