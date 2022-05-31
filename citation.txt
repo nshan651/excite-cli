@@ -1,0 +1,9 @@
+@article{konashevych2020,
+author = "Oleksii Konashevych and Oleg Khovayko"
+title = "Randpay: The technology for blockchain micropayments and transactions which require recipient's consent"
+journal = "Computers &amp; Security"
+year = "2020"
+publisher = "Elsevier BV"
+pages = "101892"
+doi = "10.1016/j.cose.2020.101892"
+}

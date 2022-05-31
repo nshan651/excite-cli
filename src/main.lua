@@ -1,16 +1,24 @@
-local Parser = require "./src/parser"
-local Format = require "./src/format"
+local Parser = require "parser"
+local Format = require "format"
 
 local Main = {}
 
 -- Save citation to clipboard and (optionally) to file
-local function put(output, output_flag, default_file)
+local function put(output, output_flag, default_file, proj_dir)
+    local f
     if output_flag then
-        local f = assert(io.open("/home/nick/github_repos/excite-cli/" .. default_file, "w"), "Cannot open file")
+        f = assert(io.open(proj_dir .. "/" .. default_file, "w"), "Cannot open file")
         f:write(output)
         f:close()
+        os.execute(string.format("cat %s/%s | xclip -sel clip", proj_dir, default_file))
+    else
+        local tempfile = "/tmp/excite-tmpfile"
+        f = assert(io.open(tempfile, "w"), "Cannot open file")
+        f:write(output)
+        f:close()
+        os.execute(string.format("cat %s | xclip -sel clip", tempfile))
+        os.execute("rm " .. tempfile)
     end
-    os.execute(string.format("cat output.txt | xclip -sel clip", output))
     --os.execute("viu test3.jpg")
     print(output)
 end
@@ -22,7 +30,7 @@ end
         payload: JSON API request data
         input_code: ISBN, DOI
 --]]
-function Main.run(payload, input_key, api_type, cite_style, output_flag, default_file)
+function Main.run(payload, input_key, api_type, cite_style, output_flag, default_file, proj_dir)
 
     local tabcite = Parser.parse_citation(payload, input_key, api_type)
 
@@ -31,7 +39,7 @@ function Main.run(payload, input_key, api_type, cite_style, output_flag, default
     local output = fmt:cite()
 
     -- Save citation to clipboard and (optionally) to file
-    put(output, output_flag, default_file)
+    put(output, output_flag, default_file, proj_dir)
 end
 
 return Main

@@ -2,7 +2,7 @@
     Unit testing for src/main.lua
 --]]
 
-local API = require "./src/api"
+local API = require "./api"
 local Main = require "./src/main"
 local Utils = require "./src/utils"
 

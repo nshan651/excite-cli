@@ -12,4 +12,6 @@
 #   -o, --output          Output citation to a file.
 #         -r <rename>,    Rename output file. (default: citation.txt)
 
-lua src/excite.lua $1 $2 $3 $4 $5
+testng = "$HOME/*/*excite-cli/"
+echo "$testng"
+#lua src/excite.lua $PROJ_DIR $1 $2 $3 $4 $5

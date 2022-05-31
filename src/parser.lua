@@ -2,7 +2,7 @@
     Parse different APIs
 --]]
 
-local Utils = require "./src/utils"
+local Utils = require "utils"
 
 local Parser = {}
 

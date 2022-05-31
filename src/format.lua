@@ -2,7 +2,7 @@
     Citation formatting class for bibtex, MLA, and APA
 --]]
 
-local Utils = require "./src/utils"
+local Utils = require "utils"
 
 local Format = {}
 

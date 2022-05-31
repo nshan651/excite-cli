@@ -42,7 +42,8 @@ end
 
 -- HTTP GET: curl the data and return decoded JSON table
 function API.decode(url)
-    local tempfile = "/home/nick/github_repos/excite/cache/data.txt"
+    --local tempfile = "/home/nick/github_repos/excite-cli/cache/data.txt"
+    local tempfile = "/tmp/excite-tmpfile"
     local f = assert(io.open(tempfile, "w"), "Cannot write to file")
     local c = curl.easy_init()
         c:setopt_url(url)
@@ -62,7 +63,7 @@ end
 -- Return JSON table of cached data for testing
 -- Cached files: isbn-bibtex, isbn-apa, search-bibtex, search-apa
 function API.load_cache(api_type, test_type)
-    local filename = "/home/nick/github_repos/excite/cache/" .. api_type .. "/" .. test_type .. ".json"
+    local filename = "/home/nick/github_repos/excite-cli/cache/" .. api_type .. "/" .. test_type .. ".json"
     local data = assert(io.open(filename), "Cannot open file")
     local str = data:read("*a")
     data:close()
