@@ -63,7 +63,7 @@ end
 -- Return JSON table of cached data for testing
 -- Cached files: isbn-bibtex, isbn-apa, search-bibtex, search-apa
 function API.load_cache(api_type, test_type)
-    local filename = "/home/nick/github_repos/excite-cli/cache/" .. api_type .. "/" .. test_type .. ".json"
+    local filename = PROJ_DIR .. "/cache/" .. api_type .. "/" .. test_type .. ".json"
     local data = assert(io.open(filename), "Cannot open file")
     local str = data:read("*a")
     data:close()
