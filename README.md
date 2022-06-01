@@ -1,5 +1,11 @@
 
 ![Logo](logo.png)
+<center>
+
+![](https://img.shields.io/github/license/nshan651/excite)
+![](https://img.shields.io/github/last-commit/nshan651/excite)
+</center>
+
 Search for a citation by specifying either the title of the work or an identifier code (ISBN, OCLC, LCCN, OLID) and a citation type (MLA, APA, BibTex). 
 
 Copy citations to your clipboard and/or add them to a bibliography file.
