@@ -2,9 +2,19 @@
     Unit testing for src/main.lua
 --]]
 
-local API = require "./api"
-local Main = require "./src/main"
-local Utils = require "./src/utils"
+-- Parse args
+local argparse = require "argparse"
+local ap = argparse("excite-test", "Run the test suite")
+ap:argument("proj_dir", "Project directory location")
+ARGS = ap:parse()
+PROJ_DIR = ARGS.proj_dir
+
+-- Add local modules to the path
+package.path = package.path .. ";" .. PROJ_DIR .. "/src/?.lua"
+
+local API = require "api"
+local Main = require "main"
+local Utils = require "utils"
 
 TESTFILES = {
     ["isbn"] =
