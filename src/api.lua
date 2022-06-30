@@ -11,14 +11,14 @@ local API = {}
 function API.fmt_url(input)
     local url
     local api_type
-
+    -- Ignore dashes when reading ISBN code
+    local trim_input = string.gsub(input[1], "-", "")
     -- Pattern matching query to check for ISBN 10/13
     if
-        string.match(input[1], "%d%d%d%d%d%d%d%d%d%d%d%d%d") or string.match(input[1], "%d%d%d%d%d%d%d%d%d%d")
+        string.match(trim_input, "%d%d%d%d%d%d%d%d%d%d%d%d%d") or string.match(trim_input, "%d%d%d%d%d%d%d%d%d%d")
     then
         url = "https://openlibrary.org/api/books?bibkeys=ISBN:" .. input[1] .. "&jscmd=data&format=json"
         api_type = "ISBN"
-
     -- DOI query
     elseif
         string.match(input[1], "10.%d%d%d%d/.+")
