@@ -42,7 +42,7 @@ end
 
 -- HTTP GET: curl the data and return decoded JSON table
 function API.decode(url)
-    --local tempfile = "/home/nick/github_repos/excite-cli/cache/data.txt"
+    --local tempfile = "/home/nick/git/excite-cli/cache/data.txt"
     local tempfile = "/tmp/excite-tmpfile"
     local f = assert(io.open(tempfile, "w"), "Cannot write to file")
     local c = curl.easy_init()

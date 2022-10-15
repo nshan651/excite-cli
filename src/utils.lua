@@ -6,7 +6,7 @@ local Utils = {}
 
 -- Split function (no string split function in standard lua)
 function Utils.split(inputstr, sep)
-    if sep == nil then
+    if not sep then
             sep = "%s"
     end
     local t={}
@@ -39,7 +39,5 @@ function Utils.recurse_table(e)
         print("     ", e)
     end
 end
-
-
 
 return Utils
