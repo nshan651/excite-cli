@@ -8,18 +8,21 @@ url="https://github.com/nshan651/excite-cli"
 license=('GPL3')
 depends=('lua>=5.1') 
 makedepends=()
+source=("$url")
 #source=("$pkgname-$pkgver.tar.gz"
 #        "$pkgname-$pkgver.patch")
-source=("excite-cli::git://github.com/nshan651/excite-cli.git")
+#source=("excite-cli::git://github.com/nshan651/excite-cli.git")
+#source=("excite-cli::git@github.com:nshan651/excite-cli.git")
 md5sums=('SKIP')
 #validpgpkeys=()
 
 build() {
-	#cd "$pkgname"
-	make
+	#cd "$pkname"
+    make 
 }
 
 package() {
-	cd "$pkgname-$pkgver"
-	make DESTDIR="$pkgdir/" install
+   #cd "$pkgname"
+   #make DESTDIR="$pkgdir/" install
+   make install
 }
