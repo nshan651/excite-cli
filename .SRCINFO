@@ -3,10 +3,10 @@ pkgbase = excite-cli
 	pkgver = v0.2.0_alpha
 	pkgrel = 1
 	url = https://github.com/nshan651/excite-cli
-	arch = any
+	arch = x86_64
 	license = GPL3
 	depends = lua>=5.1
-	source = excite-cli-v0.2.0_alpha.tar.gz
-	source = excite-cli-v0.2.0_alpha.patch
+	source = https://github.com/nshan651/excite-cli
+	md5sums = SKIP
 
 pkgname = excite-cli

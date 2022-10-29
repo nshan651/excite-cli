@@ -17,12 +17,12 @@ md5sums=('SKIP')
 #validpgpkeys=()
 
 build() {
-	#cd "$pkname"
-    make 
+    cd "$pkgname-$pkgver"
+    ./configure --prefix=/usr
+    make
 }
 
 package() {
-   #cd "$pkgname"
-   #make DESTDIR="$pkgdir/" install
-   make install
+    cd "$pkgname-$pkgver"
+    make DESTDIR="$pkgdir/" install
 }
