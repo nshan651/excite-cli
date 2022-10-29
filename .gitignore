@@ -1,7 +1,14 @@
-# JSON data
-data.txt
-output.txt
+# Data
 cache/*
+citations.txt
+
+# Git sub-repo
+src/.git
+
+# Lua bytecode and AUR build
+src/excite
+src/excite-cli*
+src/src
 
 # Compiled Lua sources
 luac.out
