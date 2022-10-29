@@ -1,14 +1,14 @@
 # Data
 cache/*
-citations.txt
+citation.txt
 
 # Git sub-repo
-src/.git
+pkg/*
 
 # Lua bytecode and AUR build
-src/excite
+src/excite/
 src/excite-cli*
-src/src
+src/src/
 
 # Compiled Lua sources
 luac.out
