@@ -2,7 +2,8 @@ TARGET = excite-cli
 SRC := src/
 
 all: 
-	luac -o $(SRC)excite $(SRC)*.lua
+	#luac -o src/excite src/*.lua
+	@-./compile.sh
 	sed -i '1i #!/bin/lua' $(SRC)excite 
 
 install:
@@ -10,4 +11,4 @@ install:
 	install -Dm755 $(SRC)excite $(DESTDIR)/usr/local/bin/excite
 
 clean:
-	#rm -rf $(SRC)excite $(SRC)excite-cli* $(SRC)pkg 
+	rm -rf $(SRC)excite 
