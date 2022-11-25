@@ -71,7 +71,10 @@ local function doi(payload)
 
 end
 
--- Search for relevant entries
+--[[
+    Search for relevant entries in increments of 5 at a time
+    Each entry must have an author name, title, first year published, and an isbn
+--]]
 local function search(payload)
     local count = 1; local step = 4
     local block
@@ -83,13 +86,16 @@ local function search(payload)
                 step = #payload - count
             end
             for i = count, count+step, 1 do
-                if payload[i]["author_name"] then
+                if
+                    payload[i]["author_name"] and payload[i]["title"] and
+                    payload[i]["first_publish_year"] and payload[i]["isbn"]
+                then
                     print("[" .. i .. "]")
                     print("   " .. payload[i]["title"])
                     print("   " .. payload[i]["author_name"][1])
                     print("   " .. payload[i]["first_publish_year"])
                     print("   " .. "ISBN: " ..  payload[i]["isbn"][1])
-                    print("-------------------------")
+                    print("__________________________________________")
                 end
             end
             print("Press any key for more results")
@@ -97,6 +103,7 @@ local function search(payload)
         end
 
         block = io.read()
+
         local sel = tonumber(block)
         if sel then
             -- Handle authors

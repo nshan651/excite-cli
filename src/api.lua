@@ -27,15 +27,10 @@ function API.fmt_url(input)
     then
         url = "https://api.crossref.org/works/" .. input[1]
         api_type = "DOI"
-
     -- Search API
     else
-        -- Set query to lower case
-        local output = string.lower(input[1])
-        for i = 2, #input do
-            output = output .. "+" .. string.lower(input[i])
-        end
-        url = "https://openlibrary.org/search.json?title=" .. output
+        local query = string.gsub(input[1], " ", "+")
+        url = "https://openlibrary.org/search.json?title=" .. string.lower(query)
         api_type = "SEARCH"
     end
     -- Text-based search
