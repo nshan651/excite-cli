@@ -1,4 +1,5 @@
 #!/bin/bash
 
-luac -o src/excite src/*.lua
+luac -o src/main/excite src/main/*.lua
+
 

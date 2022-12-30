@@ -1,6 +1,0 @@
-#!/bin/sh
-# Script to run test suite
-
-PROJ_DIR="$HOME/*/*excite-cli"
-lua $PROJ_DIR/tests/tests.lua $PROJ_DIR 
-
