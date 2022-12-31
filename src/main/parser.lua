@@ -31,6 +31,9 @@ local function isbn(payload, input_key)
     local title = payload["ISBN:" .. input_key]["title"]
     local publisher = payload["ISBN:" .. input_key]["publishers"][1]["name"]
 
+    -- bibtex code
+    local bibtex = authors[1]["family"]:lower() .. year
+
     return
     {
         authors,
@@ -39,7 +42,8 @@ local function isbn(payload, input_key)
         nil, -- journal
         year,
         publisher,
-        nil -- pages
+        nil, -- pages
+        bibtex
     }
 end
 
