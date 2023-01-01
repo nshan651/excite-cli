@@ -1,9 +1,10 @@
 [
     {
+        "test_name" : "ISBN",
         "authors": 
         [
             {
-             "given" :"Haruki",
+             "given" : "Haruki",
              "family": "Murakami"
             }
         ],
@@ -13,9 +14,23 @@
         "year": "2006",
         "publisher": "Vintage",
         "pages": "467",
-        "bibtex_id": "murakami2006",
-        "input_key": "9781400079278",
-        "api_type": "ISBN",
-        "cite_style": "bibtex"
+        "bibtex_id": "murakami2006"
+    },
+    {
+        "test_name" : "DOI",
+        "authors": 
+        [
+            {
+             "given" : "Douglas",
+             "family": "Comer"
+            }
+        ],
+        "title": "Ubiquitous B-Tree",
+        "container": null,
+        "journal": "ACM Computing Surveys",
+        "year": "1979",
+        "publisher": "Association for Computing Machinery (ACM)",
+        "pages": "121-137",
+        "bibtex_id": "comer1979"
     }
 ]

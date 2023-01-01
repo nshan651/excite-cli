@@ -32,7 +32,7 @@ function Init.main(input_key, cite_style, output_flag, default_file, proj_dir)
     -- Format JSON data as a lua table
     local payload = API.decode(url)
 
-    local tabcite = Parser.parse_citation(payload, input_key, api_type)
+    local tabcite = Parser.parse_citation(payload, input_key, api_type, cite_style)
 
     -- Format and output citation
     local fmt = Format:new(tabcite, input_key, api_type, cite_style)

@@ -62,6 +62,9 @@ local function doi(payload)
     local publisher = payload["message"]["publisher"]
     local pages = payload["message"]["page"]
 
+    -- bibtex code
+    local bibtex = authors[1]["family"]:lower() .. year
+
     return
     {
         authors,
@@ -70,7 +73,8 @@ local function doi(payload)
         journal,
         year,
         publisher,
-        pages
+        pages,
+        bibtex
     }
 
 end
