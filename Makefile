@@ -2,7 +2,6 @@ TARGET = excite-cli
 MAIN = src/main/
 
 all: 
-	#luac -o src/excite src/*.lua
 	@-./compile.sh
 	sed -i '1i #!/bin/lua' $(MAIN)excite 
 

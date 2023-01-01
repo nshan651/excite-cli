@@ -19,9 +19,8 @@ function Format:new(tab, input_key, api_type, cite_style)
     self.year = tab[5]
     self.publisher = tab[6]
     self.pages = tab[7]
-
-    self.bibtex_id = self.authors[1]["family"]:lower() .. self.year
-    self.input_key = input_key[1]
+    self.bibtex_id = tab[8]
+    self.input_key = input_key
     self.api_type = api_type
     self.cite_style = cite_style
     return o
@@ -50,7 +49,11 @@ local function spacing(self, tab)
                 output = output .. "\n\t"
                 char_count = 0
             end
-            output = output .. " " .. substr[j]
+            if i == 1 and j == 1 then
+                output = output .. substr[j]
+            else
+                output = output .. " " .. substr[j]
+            end
         end
     end
     return output
@@ -68,20 +71,20 @@ local function bibtex(self)
 
     if self.api_type == "ISBN" or self.api_type == "SEARCH" then
         return "@book{" .. self.bibtex_id .. ",\n" ..
-        "title = " .. string.format("\"%s\"", self.title) .. "\n" ..
-        "author = " .. string.format("\"%s\"", auth) .. "\n" ..
-        "year = " .. string.format("\"%s\"", self.year) .. "\n" ..
-        "publisher = " .. string.format("\"%s\"", self.publisher) .. "\n" ..
+        "title = " .. string.format("\"%s\",\n", self.title) ..
+        "author = " .. string.format("\"%s\",\n", auth) ..
+        "year = " .. string.format("\"%s\",\n", self.year) ..
+        "publisher = " .. string.format("\"%s\"\n", self.publisher) ..
         "}"
 
     elseif self.api_type == "DOI" then
         return "@article{" .. self.bibtex_id .. ",\n" ..
-        "author = " .. string.format("\"%s\"", auth) .. "\n" ..
-        "title = " .. string.format("\"%s\"", self.title) .. "\n" ..
-        "journal = " .. string.format("\"%s\"", self.journal) .. "\n" ..
-        "year = " .. string.format("\"%s\"", self.year) .. "\n" ..
-        "publisher = " .. string.format("\"%s\"", self.publisher) .. "\n" ..
-        "pages = " .. string.format("\"%s\"", self.pages) .. "\n" ..
+        "author = " .. string.format("\"%s\",\n", auth) ..
+        "title = " .. string.format("\"%s\",\n", self.title) ..
+        "journal = " .. string.format("\"%s\",\n", self.journal) ..
+        "year = " .. string.format("\"%s\",\n", self.year) ..
+        "publisher = " .. string.format("\"%s\",\n", self.publisher) ..
+        "pages = " .. string.format("\"%s\",\n", self.pages) ..
         "doi = " .. string.format("\"%s\"\n", self.input_key) ..
         "}"
     end

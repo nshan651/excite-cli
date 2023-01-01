@@ -1,15 +1,36 @@
 [
     {
-        "authors": "Haruki Murakami",
+        "test_name" : "ISBN",
+        "authors": 
+        [
+            {
+             "given" : "Haruki",
+             "family": "Murakami"
+            }
+        ],
         "title": "Kafka on the shore",
-        "container": "",
-        "journal": "",
+        "container": null,
+        "journal": null,
         "year": "2006",
         "publisher": "Vintage",
-        "pages": "",
-        "bibtex_id": "",
-        "input_key": "",
-        "api_type": "",
-        "cite_style": ""
+        "pages": "467",
+        "bibtex_id": "murakami2006"
+    },
+    {
+        "test_name" : "DOI",
+        "authors": 
+        [
+            {
+             "given" : "Douglas",
+             "family": "Comer"
+            }
+        ],
+        "title": "Ubiquitous B-Tree",
+        "container": null,
+        "journal": "ACM Computing Surveys",
+        "year": "1979",
+        "publisher": "Association for Computing Machinery (ACM)",
+        "pages": "121-137",
+        "bibtex_id": "comer1979"
     }
 ]

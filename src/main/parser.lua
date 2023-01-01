@@ -13,7 +13,7 @@ local function isbn(payload, input_key)
     -- Gather basic info: author, title, year, publisher
 
     -- Handle authors
-    local names = payload["ISBN:" .. input_key[1]]["authors"]
+    local names = payload["ISBN:" .. input_key]["authors"]
     local authors = {}
     for i=1, #names do
         local author = Utils.split(names[i]["name"], "%s")
@@ -22,14 +22,17 @@ local function isbn(payload, input_key)
 
     -- Split date string to find the year
     local year
-    local date = Utils.split(payload["ISBN:" .. input_key[1]]["publish_date"], "%s")
+    local date = Utils.split(payload["ISBN:" .. input_key]["publish_date"], "%s")
     for _,s in pairs(date) do
         year=s
     end
 
     -- Title and publisher
-    local title = payload["ISBN:" .. input_key[1]]["title"]
-    local publisher = payload["ISBN:" .. input_key[1]]["publishers"][1]["name"]
+    local title = payload["ISBN:" .. input_key]["title"]
+    local publisher = payload["ISBN:" .. input_key]["publishers"][1]["name"]
+
+    -- bibtex code
+    local bibtex = authors[1]["family"]:lower() .. year
 
     return
     {
@@ -39,7 +42,8 @@ local function isbn(payload, input_key)
         nil, -- journal
         year,
         publisher,
-        nil -- pages
+        nil, -- pages
+        bibtex
     }
 end
 
@@ -58,6 +62,9 @@ local function doi(payload)
     local publisher = payload["message"]["publisher"]
     local pages = payload["message"]["page"]
 
+    -- bibtex code
+    local bibtex = authors[1]["family"]:lower() .. year
+
     return
     {
         authors,
@@ -66,7 +73,8 @@ local function doi(payload)
         journal,
         year,
         publisher,
-        pages
+        pages,
+        bibtex
     }
 
 end

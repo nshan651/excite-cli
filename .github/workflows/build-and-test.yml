@@ -1,0 +1,18 @@
+name: Build and test with Docker
+
+on: [push]
+
+jobs:
+  build-and-test:
+    runs-on: archlinux-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Docker
+      uses: docker/setup-docker@v1
+      with:
+        docker-version: 19.03
+    - name: Build the image
+      run: docker build -t excite-image .
+    - name: Run the tests
+      run: docker run excite-image test
+
