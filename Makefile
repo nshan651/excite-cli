@@ -1,8 +1,12 @@
 TARGET = excite-cli
 MAIN = src/main/
 
-all: 
+all:
+	# Install luarocks packages
+	luarocks install json-lua argparse lua-curl busted
+	# Compile to lua bytecode
 	@-./compile.sh
+	# Add shebang to allow execution by stand-alone interpreter
 	sed -i '1i #!/bin/lua' $(MAIN)excite 
 
 install:
