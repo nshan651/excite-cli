@@ -4,8 +4,10 @@
     API handling module
 --]]
 
-local curl = require "cURL"
+package.path = package.path .. ";" .. os.getenv("HOME") .. "/git/excite-cli" .. "/src/main/?.lua"
+
 local Json = require "json"
+local curl = require "cURL"
 
 local API = {}
 

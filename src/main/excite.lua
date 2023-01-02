@@ -1,5 +1,7 @@
 #!/usr/bin/lua
 
+package.path = package.path .. ";" .. os.getenv("HOME") .. "/git/excite-cli" .. "/src/main/?.lua"
+
 local argparse = require "argparse"
 
 local ascii_logo = [[
@@ -27,7 +29,6 @@ DEFAULT_FILE = ARGS.rename
 
 -- Add local modules to the path
 local PROJ_DIR = os.getenv("HOME") .. "/git/excite-cli"
-package.path = package.path .. ";" .. os.getenv("HOME") .. "/git/excite-cli" .. "/src/main/?.lua"
 
 -- Source local modules
 local Init = require "init"

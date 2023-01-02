@@ -1,5 +1,7 @@
 #!/usr/bin/lua
 
+package.path = package.path .. ";" .. os.getenv("HOME") .. "/git/excite-cli" .. "/src/main/?.lua"
+
 local API = require "api"
 local Parser = require "parser"
 local Format = require "format"
@@ -32,7 +34,7 @@ function Init.main(input_key, cite_style, output_flag, default_file, proj_dir)
     -- Format JSON data as a lua table
     local payload = API.decode(url)
 
-    local tabcite = Parser.parse_citation(payload, input_key, api_type, cite_style)
+    local tabcite = Parser.parse_citation(payload, input_key, api_type)
 
     -- Format and output citation
     local fmt = Format:new(tabcite, input_key, api_type, cite_style)
