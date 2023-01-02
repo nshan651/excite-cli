@@ -5,7 +5,7 @@ all:
 	# Compile to lua bytecode
 	@-./compile.sh
 	# Add shebang to allow execution by stand-alone interpreter
-	sed -i '1i #!/bin/lua' $(MAIN)excite 
+	sed -i '1i #!/usr/bin/lua' $(MAIN)excite 
 
 install:
 	mkdir -p $(DESTDIR)/usr/local/bin
