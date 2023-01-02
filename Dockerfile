@@ -24,12 +24,6 @@ RUN cd && rm -rf .cache yay
 # Install excite
 RUN yay --noconfirm --answerclean 1 -S excite-cli
 
-USER root
-
-# Install luarocks packages (DELETE LATER)
-#RUN luarocks install json-lua
-#RUN luarocks install argparse
-#RUN luarocks install busted
-#RUN luarocks install lua-curl
+#USER root
 
 RUN excite -h
