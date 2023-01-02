@@ -4,9 +4,8 @@
     API handling module
 --]]
 
---local json = require "JSON" -- Uses json-lua
-local json = require "json"
 local curl = require "cURL"
+local Json = require "json"
 
 local API = {}
 
@@ -57,7 +56,7 @@ function API.decode(url)
     -- Remove tempfile when finished
     os.execute("rm " .. tempfile)
     -- return json:decode(str) DELETE!
-    return json.decode(str)
+    return Json.decode(str)
 end
 
 return API

@@ -32,5 +32,4 @@ package.path = package.path .. ";" .. os.getenv("HOME") .. "/git/excite-cli" .. 
 -- Source local modules
 local Init = require "init"
 
---Init.main(INPUT_KEY, CITE_STYLE, OUTPUT_FLAG, DEFAULT_FILE, PROJ_DIR)
 Init.main(INPUT_KEY[1], CITE_STYLE, OUTPUT_FLAG, DEFAULT_FILE, PROJ_DIR)

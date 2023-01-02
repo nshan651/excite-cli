@@ -26,4 +26,6 @@ RUN yay --noconfirm --answerclean 1 -S excite-cli
 
 #USER root
 
-RUN excite -h
+RUN ["/usr/bin/lua", "/usr/local/bin/excite"]
+#RUN excite -h
+#CMD ["/usr/bin/lua", "-b", "excite -h"]
