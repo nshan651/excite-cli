@@ -1,5 +1,7 @@
 #!/usr/bin/lua
 
+print("HOME is: " .. os.getenv("HOME"))
+
 package.path = package.path .. ";" .. os.getenv("HOME") .. "/git/excite-cli" .. "/src/main/?.lua"
 
 local API = require "api"
