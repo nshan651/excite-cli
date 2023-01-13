@@ -9,10 +9,10 @@ jobs:
     - uses: actions/checkout@v2
     - name: Set up Docker
       uses: docker://docker:stable
-    - name: Build and push Docker image
+    - name: Build Docker image
       run: |
-        docker build -t excite-image .
-        docker push excite-image
+        docker build -t nshan651/myimage .
+        #docker push nshan651/excite-image
         #- name: Run Docker container
         #run: |
         #docker run -it excite-image /bin/bash
