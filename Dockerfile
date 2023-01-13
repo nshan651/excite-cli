@@ -29,9 +29,15 @@ RUN yay --noconfirm --answerclean 1 -S excite-cli
 #    && luarocks install --local busted \
 #    && luarocks install --local argparse
 
+USER root
+
+RUN luarocks install lua-curl \
+    && luarocks install busted \
+    && luarocks install argparse
+
 #ENV HOME /home/worker
 #ENV HOME /root
 
-RUN ["/usr/bin/lua", "/usr/local/bin/excite", "-h"]
-#RUN excite -h
+#RUN ["/usr/bin/lua", "/usr/local/bin/excite", "-h"]
+RUN excite -h
 #CMD ["/usr/bin/lua", "-b", "excite -h"]

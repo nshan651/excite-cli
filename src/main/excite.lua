@@ -1,6 +1,6 @@
 #!/usr/bin/lua
 
-package.path = package.path .. ";" .. os.getenv("HOME") .. "/git/excite-cli" .. "/src/main/?.lua"
+--package.path = package.path .. ";" .. os.getenv("HOME") .. "/git/excite-cli" .. "/src/main/?.lua"
 
 local argparse = require "argparse"
 
@@ -31,6 +31,6 @@ DEFAULT_FILE = ARGS.rename
 local PROJ_DIR = os.getenv("HOME") .. "/git/excite-cli"
 
 -- Source local modules
-local Init = require "init"
+--local Init = require "init"
 
 Init.main(INPUT_KEY[1], CITE_STYLE, OUTPUT_FLAG, DEFAULT_FILE, PROJ_DIR)

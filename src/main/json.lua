@@ -1,6 +1,5 @@
 #!/usr/bin/lua
 
-package.path = package.path .. ";" .. os.getenv("HOME") .. "/git/excite-cli" .. "/src/main/?.lua"
 --
 -- json.lua
 --

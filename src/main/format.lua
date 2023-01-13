@@ -4,9 +4,9 @@
     Citation formatting class for bibtex, MLA, and APA
 --]]
 
-package.path = package.path .. ";" .. os.getenv("HOME") .. "/git/excite-cli" .. "/src/main/?.lua"
+--package.path = package.path .. ";" .. os.getenv("HOME") .. "/git/excite-cli" .. "/src/main/?.lua"
 
-local Utils = require "utils"
+--local Utils = require "utils"
 
 local Format = {}
 

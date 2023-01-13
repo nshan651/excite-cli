@@ -1,12 +1,10 @@
 #!/usr/bin/lua
 
-print("HOME is: " .. os.getenv("HOME"))
+--package.path = package.path .. ";" .. os.getenv("HOME") .. "/git/excite-cli" .. "/src/main/?.lua"
 
-package.path = package.path .. ";" .. os.getenv("HOME") .. "/git/excite-cli" .. "/src/main/?.lua"
-
-local API = require "api"
-local Parser = require "parser"
-local Format = require "format"
+--local API = require "api"
+--local Parser = require "parser"
+--local Format = require "format"
 
 local Init = {}
 
@@ -33,6 +31,7 @@ end
 function Init.main(input_key, cite_style, output_flag, default_file, proj_dir)
     -- Format url
     local url, api_type = API.fmt_url(input_key)
+
     -- Format JSON data as a lua table
     local payload = API.decode(url)
 
