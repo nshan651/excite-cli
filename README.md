@@ -4,6 +4,7 @@
 
 ![](https://img.shields.io/github/license/nshan651/excite)
 ![](https://img.shields.io/github/last-commit/nshan651/excite)
+![](https://img.shields.io/github/actions/workflow/status/nshan651/excite/build-and-test.yml)
 </center>
 
 Search for a citation by specifying either the title of the work or an identifier code (ISBN, OCLC, LCCN, OLID) and a citation type (MLA, APA, BibTex). 
