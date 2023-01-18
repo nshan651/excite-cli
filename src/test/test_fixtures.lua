@@ -20,6 +20,7 @@ local function build_sut()
     if not success then
         error("An error occured while reading or decoding the test file")
     end
+
     return data
 end
 
@@ -65,6 +66,7 @@ publisher = "Vintage"
         local actual = fmt:cite()
         assert.are.equals(expected, actual)
     end)
+    ---[[
     it("should work using APA cite style", function()
         local inst = test_instance(SUT[1])
         local expected = "Murakami, H.(2006). Kafka on the shore. VINTAGE."
@@ -89,6 +91,7 @@ publisher = "Vintage"
         local actual = fmt:cite()
         assert.are.equals(expected, actual)
     end)
+    --]]
 end)
 
 describe("a paper cited with the DOI API", function ()
@@ -114,6 +117,7 @@ doi = "10.1145/356770.356776"
         local actual = fmt:cite()
         assert.are.equals(expected, actual)
     end)
+    ---[[
     it("should work using APA cite style", function()
         local inst = test_instance(SUT[2])
         local expected = "Comer, D.(1979). Ubiquitous B-Tree. ASSOCIATION FOR COMPUTING MACHINERY (ACM)."
@@ -138,4 +142,5 @@ doi = "10.1145/356770.356776"
         local actual = fmt:cite()
         assert.are.equals(expected, actual)
     end)
+    --]]
 end)
