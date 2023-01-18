@@ -13,6 +13,14 @@ RUN useradd --system --create-home worker \
 USER worker 
 WORKDIR /home/worker
 
+
+RUN luarocks install busted
+
+# Pull src and run tests
+RUN git clone https://github.com/nshan651/excite-cli.git \
+    && cd excite-cli/src/test \
+    && busted test_fixtures.lua
+
 # Install yay
 RUN git clone https://aur.archlinux.org/yay.git \
     && cd yay \
@@ -23,11 +31,6 @@ RUN cd && rm -rf .cache yay
 
 # Install excite
 RUN yay --noconfirm --answerclean 1 -S excite-cli
-
-#USER root
-#RUN luarocks install --local lua-curl \
-#    && luarocks install --local busted \
-#    && luarocks install --local argparse
 
 USER root
 
