@@ -6,7 +6,7 @@
 --local Parser = require "parser"
 --local Format = require "format"
 
-local Init = {}
+Init = {}
 
 -- Save citation to clipboard and (optionally) to file
 local function put(output, output_flag, default_file, proj_dir)

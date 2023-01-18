@@ -6,7 +6,8 @@
 
 --package.path = package.path .. ";" .. os.getenv("HOME") .. "/git/excite-cli" .. "/src/main/?.lua"
 
-local Utils = {}
+--local Utils = {}
+Utils = {}
 
 -- Split function (no string split function in standard lua)
 function Utils.split(inputstr, sep)

@@ -9,7 +9,7 @@
 local curl = require "cURL"
 --local Json = require "json"
 
-local API = {}
+API = {}
 
 -- API switch to determine which api you are using (ISBN/WorksID, search, etc.)
 function API.fmt_url(input)

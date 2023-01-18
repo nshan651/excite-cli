@@ -8,7 +8,7 @@
 
 --local Utils = require "utils"
 
-local Parser = {}
+Parser = {}
 
 local function isbn(payload, input_key)
     -- Retrieve citation by ISBN

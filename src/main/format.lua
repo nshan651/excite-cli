@@ -8,7 +8,7 @@
 
 --local Utils = require "utils"
 
-local Format = {}
+Format = {}
 
 function Format:new(tab, input_key, api_type, cite_style)
     o = {}
