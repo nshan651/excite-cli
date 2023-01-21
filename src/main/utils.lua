@@ -4,8 +4,6 @@
     Utility functions
 --]]
 
---package.path = package.path .. ";" .. os.getenv("HOME") .. "/git/excite-cli" .. "/src/main/?.lua"
-
 --local Utils = {}
 Utils = {}
 

@@ -4,10 +4,8 @@
     API handling module
 --]]
 
---package.path = package.path .. ";" .. os.getenv("HOME") .. "/git/excite-cli" .. "/src/main/?.lua"
-
 local curl = require "cURL"
---local Json = require "json"
+local json = require "json"
 
 API = {}
 
@@ -57,7 +55,6 @@ function API.decode(url)
     data:close()
     -- Remove tempfile when finished
     os.execute("rm " .. tempfile)
-    -- return json:decode(str) DELETE!
     return json.decode(str)
 end
 

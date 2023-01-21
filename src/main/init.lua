@@ -2,9 +2,9 @@
 
 --package.path = package.path .. ";" .. os.getenv("HOME") .. "/git/excite-cli" .. "/src/main/?.lua"
 
---local API = require "api"
---local Parser = require "parser"
---local Format = require "format"
+local API = require "api"
+local Parser = require "parser"
+local Format = require "format"
 
 Init = {}
 

@@ -29,10 +29,10 @@ RUN cd && rm -rf .cache yay
 # Install excite
 RUN yay --noconfirm --answerclean 1 -S excite-cli
 
-USER root
+RUN excite -h
+#USER root
 
 #RUN luarocks install lua-curl \
 #    && luarocks install busted \
 #    && luarocks install argparse
 
-RUN excite -h

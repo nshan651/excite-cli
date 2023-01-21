@@ -4,9 +4,7 @@
     Parse different APIs
 --]]
 
---package.path = package.path .. ";" .. os.getenv("HOME") .. "/git/excite-cli" .. "/src/main/?.lua"
-
---local Utils = require "utils"
+local Utils = require "utils"
 
 Parser = {}
 
